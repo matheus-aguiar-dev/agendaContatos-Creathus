@@ -1,6 +1,8 @@
 # contatos
 
-Um CRUD para simular uma agenda de contatos usando VUE e data-mocks
+Aplicação Vue para simulação de um CRUD de uma agenda de contatos
+
+OPÇÃO 01 do Teste prático de Avaliação Técnica para Seleção de Desenvolvedor de Software Júnior
 
 ## Project setup
 
