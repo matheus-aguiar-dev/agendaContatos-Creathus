@@ -11,24 +11,27 @@
               <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
               </ul>
            </p>
-            <input type="text" class="form__input" placeholder="Nome: xxxxx" v-model="contatoNome" />
+            <input type="text" class="form__input" placeholder="Nome:" v-model="contatoNome" />
             <input
               type="radio"
               @change="onChange($event)"
               class="inline"
-              value="Masculino"
-              v-model="contatoSexoChecked"
+              :value="false"
+              v-model="sexoMasculino"
+              :checked="sexoMasculino"
             />
             Homem
             <input
             type="radio"
             @change="onChange($event)"
-            value="Feminino"
-            v-model="contatoSexoChecked"
+            :value="false"
+            v-model="sexoFeminino"
+            :checked="sexoFeminino"
+
             />
             Mulher<br />
-            <input type="text" class="form__input" placeholder="Email: x@x.xx" v-model="contatoEmail" />
-            <input type="text" class="form__input" placeholder="Número: 9xxxxxxxx" v-model="contatoNumero" /><br />
+            <input type="text" class="form__input" placeholder="Email:" v-model="contatoEmail" />
+            <input type="text" class="form__input" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
             <input class="form-submit-button" type="submit" value="Adicionar">
           </form>
         </div>
@@ -42,38 +45,21 @@
               </ul>
           </p>
           <input type="text" class="form__input"   placeholder="Nome:" v-model="contatoNome" />
-            <div v-if="contatoSexo === 'Masculino'" >
-                <input
-                  type="radio"
-                  @change="onChange($event)"
-                  class="inline"
-                  value="Masculino"
-                  v-model="contatoSexoChecked"
-                  checked
-                  />Homem
-                <input
-                  type="radio"
-                  @change="onChange($event)"
-                  value="Feminino"
-                  v-model="contatoSexoChecked"
-                />Mulher<br />
-            </div>
-            <div v-else>
-              <input
-                  type="radio"
-                  @change="onChange($event)"
-                  class="inline"
-                  value="Masculino"
-                  v-model="contatoSexoChecked"
-                  checked
-                  />Homem
-                <input
-                  type="radio"
-                  @change="onChange($event)"
-                  value="Feminino"
-                  v-model="contatoSexoChecked"
-                />Mulher<br />
-            </div>
+          <input
+            type="radio"
+            @change="onChange()"
+            class="inline"
+            value="Masculino"
+            v-model="sexoMasculino"
+          />
+          Homem
+          <input
+            type="radio"
+            @change="onChange()"
+            value="Feminino"
+            v-model="sexoFeminino"
+          />
+          Mulher<br />
           <input type="text" class="form__input" placeholder="Email:" v-model="contatoEmail" />
           <input type="text" class="form__input" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
           <input class="updateButton " type="submit" value="Editar">
@@ -114,13 +100,28 @@ export default {
       contatoSexoChecked: false,
       contatoEmail: "",
       contatoNumero: "",
-      id: null,
+      sexoMasculino: "",
+      sexoFeminino: "",      
     };
   },
   
   methods: {
 
-    /*
+    genero(masculino, feminino){
+      if(masculino){
+        this.sexoMasculino = true;
+        this.sexoFeminino= false;
+
+      }
+      if(feminino){
+        
+        this.sexoFeminino= true;
+        this.sexoMasculino= false;
+
+
+      }
+    },
+        /*
     Função responsável pela validação de cada um dos campos
   */
     validate(e) {
@@ -197,8 +198,10 @@ export default {
       /*
       Validação nome de contato, basta apenas escrever alguma coisa para ser dado como válido
       */
+
       this.errors=[]
       this.isEditing = true;
+
       if (!this.contatoNome) {
         this.errors.push("Insira o nome.");
                 this.requestSent=false;
@@ -255,7 +258,7 @@ export default {
         email: this.contatoEmail,
         numero: this.contatoNumero,
       });
-      this.contatoNome = "";
+        this.contatoNome = "";
       this.contatoSexo = "";
       this.contatoEmail = "";
       this.contatoNumero = "";
@@ -285,9 +288,9 @@ export default {
     /*
       Para observar cada mudança no input de gênero
       */
-    onChange(e) {
-      this.contatoSexo = e.target.value;
-      console.log(e.target.checked)
+    onChange() {
+      console.log('entrei');
+      this.genero(this.sexoMasculino,this.sexoFeminino);
     },
     /*
       Função responsável por remover o contato
@@ -305,7 +308,33 @@ export default {
       this.contatos.splice(index, 1);
 
     },
-   
+    /*
+      Função responsável por atualizar um contato já salvo
+      
+      */
+    updateContato() {
+      console.log("PUT request para atualizar um contato especifico")
+      axios.put("http://localhost:8080/contatos-id", this.contatos[this.selectedIndex]).then((response)=>{
+        console.log(response)
+      }).catch((error)=>{
+        console.log(error)
+      })
+      this.contatos.splice(this.selectedIndex, 1, {
+        nome: this.contatoNome,
+        sexo: this.contatoSexo,
+        email: this.contatoEmail,
+        numero: this.contatoNumero,
+        
+      });
+      this.contatoNome = "";
+      this.contatoSexo = "";
+      this.contatoEmail = "";
+      this.contatoNumero = "";
+      this.contatoSexoChecked= false,      
+      this.isEditing = false;
+      
+
+    },
     /*
       Função responsável por pegar as informações do contato que queremos editar
       */
@@ -313,7 +342,6 @@ export default {
       
       this.isEditing = true;
       this.contatoNome = nome;
-      this.contatoSexoChecked = '';
       this.contatoSexo = sexo;
       this.contatoEmail = email;
       this.contatoNumero = numero;
@@ -364,7 +392,6 @@ export default {
   flex-grow: 1;
 	width: 33%;
 	height: 150px;
-  padding-left: 190px;
 }
 h4{
   margin-top: 10px;
