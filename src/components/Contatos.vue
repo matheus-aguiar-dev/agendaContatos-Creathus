@@ -34,10 +34,16 @@
         </form>
       </div>
       <div v-else>
-        <form @submit="validate" action=""></form>
-        <input type="text" v-model="contatoNome" />
-        
-         <input
+
+      <form @submit="validateUpdate" action="/http://localhost:8080/novo-contato"  method="post" novalidate="true" >
+         <p v-if="errors.length">
+    <b>Corrija o(s) seguinte(s) erro(s):</b>
+    <ul>
+      <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
+    </ul>
+  </p>
+          <input type="text" placeholder="Nome:" v-model="contatoNome" />
+          <input
             type="radio"
             @change="onChange($event)"
             class="inline"
@@ -50,12 +56,12 @@
             @change="onChange($event)"
             value="Feminino"
             v-model="contatoSexoChecked"
-            
           />
           Mulher<br />
           <input type="text" placeholder="Email:" v-model="contatoEmail" />
-          <input type="text" placeholder="Número:" v-model="contatoNumero" /><br />
-        <input type="submit" class="updateButton" value="Update" @click="updateContato" />
+          <input type="text" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
+          <input class="updateButton " type="submit" value="Editar">
+        </form>
       </div>
 
       <div v-for="(contato, index) of contatos" :key="contato.id" class='divFlex  '>
@@ -102,11 +108,10 @@ export default {
     Função responsável pela validação de cada um dos campos
   */
     validate(e) {
-      this.errors=[]
-      
       /*
       Validação nome de contato, basta apenas escrever alguma coisa para ser dado como válido
       */
+      this.errors=[]
       if (!this.contatoNome) {
         this.errors.push("Insira o nome.");
                 this.requestSent=false;
@@ -167,6 +172,82 @@ export default {
         }).catch((error)=>{
           console.log(error)
         })
+         
+      }
+      this.requestSent=true;
+      e.preventDefault();
+    },
+    validateUpdate(e) {
+      /*
+      Validação nome de contato, basta apenas escrever alguma coisa para ser dado como válido
+      */
+
+      this.errors=[]
+      this.isEditing = true;
+
+      if (!this.contatoNome) {
+        this.errors.push("Insira o nome.");
+                this.requestSent=false;
+      }
+      /*
+        Apenas é necessário marcar o input radio para passar dessa etapa
+      */
+      if(!this. contatoSexoChecked){
+        this.errors.push("Insira o sexo")
+                this.requestSent=false;
+
+      }
+      /*
+        Aqui a validação foi dada da seguinte forma, é obrigatório ao menos um caracter antes do "@"
+         também sendo necessário um caracter antes do ponto e dois caracteres após
+      */
+      if (!this.contatoEmail) {
+        this.errors.push('Insira email para contato.');
+                this.requestSent=false;
+
+      } else if (!this.validEmail(this.contatoEmail)) {
+        this.errors.push('Valid email required.');
+                this.requestSent=false;
+
+      }
+      /*
+        A validação de número de contato é a seguinte, é necessário uma string composta por 9 caracteres 
+        O primeiro caracter tem que ser obrigatoriamente 9
+      */
+      if(!this.contatoNumero){
+        this.errors.push('Insira um numero para contato.');
+                this.requestSent=false;
+
+      }else if (!this.validCelular(this.contatoNumero)) {
+        this.errors.push('Insira numero valido para contato.');
+        this.requestSent=false;
+
+      }
+      /*
+        Se todas as condições de validações foram passadas, está tudo pronto para armazenar o dado para nosso array of objects de informações
+
+      */
+      if(this.requestSent){
+        
+      console.log("PUT request para atualizar um contato especifico")
+      axios.put("http://localhost:8080/contatos-id", this.contatos[this.selectedIndex]).then((response)=>{
+        console.log(response)
+      }).catch((error)=>{
+        console.log(error)
+      })
+        this.contatos.splice(this.selectedIndex, 1, {
+        nome: this.contatoNome,
+        sexo: this.contatoSexo,
+        email: this.contatoEmail,
+        numero: this.contatoNumero,
+      });
+        this.contatoNome = "";
+      this.contatoSexo = "";
+      this.contatoEmail = "";
+      this.contatoNumero = "";
+      this.contatoSexoChecked= false,      
+      this.isEditing = false;
+        
          
       }
       this.requestSent=true;
