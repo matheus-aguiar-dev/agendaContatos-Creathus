@@ -11,7 +11,7 @@
               <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
               </ul>
            </p>
-            <input type="text" placeholder="Nome:" v-model="contatoNome" />
+            <input type="text" class="form__input" placeholder="Nome:" v-model="contatoNome" />
             <input
               type="radio"
               @change="onChange($event)"
@@ -27,8 +27,8 @@
             v-model="contatoSexoChecked"
             />
             Mulher<br />
-            <input type="text" placeholder="Email:" v-model="contatoEmail" />
-            <input type="text" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
+            <input type="text" class="form__input" placeholder="Email:" v-model="contatoEmail" />
+            <input type="text" class="form__input" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
             <input class="form-submit-button" type="submit" value="Adicionar">
           </form>
         </div>
@@ -41,7 +41,7 @@
                 <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
               </ul>
           </p>
-          <input type="text" placeholder="Nome:" v-model="contatoNome" />
+          <input type="text" class="form__input"   placeholder="Nome:" v-model="contatoNome" />
           <input
             type="radio"
             @change="onChange($event)"
@@ -57,8 +57,8 @@
             v-model="contatoSexoChecked"
           />
           Mulher<br />
-          <input type="text" placeholder="Email:" v-model="contatoEmail" />
-          <input type="text" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
+          <input type="text" class="form__input" placeholder="Email:" v-model="contatoEmail" />
+          <input type="text" class="form__input" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
           <input class="updateButton " type="submit" value="Editar">
         </form>
       </div>
@@ -408,7 +408,7 @@ h4{
 .form-submit-button {
      background: #0066A2;
      color: white;
-     margin-top: 20px;
+     margin-top: 3px;
      border-style: outset;
      border-color: #0066A2;
      height: 50px;
@@ -427,4 +427,17 @@ h4{
      font: bold 15px arial, sans-serif;
      text-shadow:none;
 } 
+.form__input {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  font-size: 1.2rem;
+	margin: 5px auto;
+  width: 70%;
+  border-radius: 0.2rem;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  display: block;
+  border-bottom: 0.3rem solid transparent;
+  transition: all 0.3s;
+}
 </style>
