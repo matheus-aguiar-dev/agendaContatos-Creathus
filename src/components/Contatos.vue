@@ -133,7 +133,7 @@ export default {
                 this.requestSent=false;
 
       } else if (!this.validEmail(this.contatoEmail)) {
-        this.errors.push('Valid email required.');
+        this.errors.push('Insira um email valido.');
                 this.requestSent=false;
 
       }
