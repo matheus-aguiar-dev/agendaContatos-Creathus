@@ -1,5 +1,5 @@
 <template>
-  <div class="tablet">
+  <div class="tablet" id="tablet">
     <h1>Contatos</h1>
     <div v-if="loading"><h1>Carregando...</h1></div>
     <div v-else>
@@ -163,7 +163,7 @@ export default {
                 this.requestSent=false;
 
       }else if (!this.validCelular(this.contatoNumero)) {
-        this.errors.push('Insira numero valido para contato.');
+        this.errors.push('Insira numero valido para contato, precisa conter 9 digitos iniciados com 9.');
         this.requestSent=false;
 
       }
@@ -193,6 +193,8 @@ export default {
       this.requestSent=true;
       e.preventDefault();
     },
+
+    
     validateUpdate(e) {
       /*
       Validação nome de contato, basta apenas escrever alguma coisa para ser dado como válido
@@ -220,7 +222,7 @@ export default {
                 this.requestSent=false;
 
       } else if (!this.validEmail(this.contatoEmail)) {
-        this.errors.push('Valid email required.');
+        this.errors.push('Insira um email valido.');
                 this.requestSent=false;
 
       }
@@ -233,7 +235,7 @@ export default {
                 this.requestSent=false;
 
       }else if (!this.validCelular(this.contatoNumero)) {
-        this.errors.push('Insira numero valido para contato.');
+        this.errors.push('Insira numero valido para contato, precisa conter 9 digitos iniciados com 9.');
         this.requestSent=false;
 
       }
@@ -287,6 +289,7 @@ export default {
       */
     onChange(e) {
       this.contatoSexo = e.target.value;
+      
     },
     /*
       Função responsável por remover o contato
@@ -309,8 +312,6 @@ export default {
       Função responsável por pegar as informações do contato que queremos editar
       */
     editContato(index, nome,sexo,email,numero) {
-      
-      this.isEditing = true;
       this.contatoNome = nome;
       this.contatoSexoChecked = '';
       this.contatoSexo = sexo;
