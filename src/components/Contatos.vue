@@ -2,46 +2,45 @@
   <div class="tablet">
     <h1>Contatos</h1>
     <div v-if="loading"><h1>Carregando...</h1></div>
-
     <div v-else>
-      <div v-if="!isEditing">
-        <form @submit="validate" action="/http://localhost:8080/novo-contato"  method="post" novalidate="true" >
-         <p v-if="errors.length">
-    <b>Corrija o(s) seguinte(s) erro(s):</b>
-    <ul>
-      <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
-    </ul>
-  </p>
-          <input type="text" placeholder="Nome:" v-model="contatoNome" />
-          <input
-            type="radio"
-            @change="onChange($event)"
-            class="inline"
-            value="Masculino"
-            v-model="contatoSexoChecked"
-          />
-          Homem
-          <input
+        <div v-if="!isEditing">
+          <form @submit="validate" action="/http://localhost:8080/novo-contato"  method="post" novalidate="true" >
+            <p v-if="errors.length">
+              <b>Corrija o(s) seguinte(s) erro(s):</b>
+              <ul>
+              <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
+              </ul>
+           </p>
+            <input type="text" placeholder="Nome:" v-model="contatoNome" />
+            <input
+              type="radio"
+              @change="onChange($event)"
+              class="inline"
+              value="Masculino"
+              v-model="contatoSexoChecked"
+            />
+            Homem
+            <input
             type="radio"
             @change="onChange($event)"
             value="Feminino"
             v-model="contatoSexoChecked"
-          />
-          Mulher<br />
-          <input type="text" placeholder="Email:" v-model="contatoEmail" />
-          <input type="text" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
-          <input class="form-submit-button" type="submit" value="Add">
-        </form>
-      </div>
+            />
+            Mulher<br />
+            <input type="text" placeholder="Email:" v-model="contatoEmail" />
+            <input type="text" placeholder="Número 9xxxxxxxx" v-model="contatoNumero" /><br />
+            <input class="form-submit-button" type="submit" value="Adicionar">
+          </form>
+        </div>
       <div v-else>
 
-      <form @submit="validateUpdate" action="/http://localhost:8080/novo-contato"  method="post" novalidate="true" >
-         <p v-if="errors.length">
-    <b>Corrija o(s) seguinte(s) erro(s):</b>
-    <ul>
-      <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
-    </ul>
-  </p>
+        <form @submit="validateUpdate" action="/http://localhost:8080/novo-contato"  method="post" novalidate="true" >
+          <p v-if="errors.length">
+              <b>Corrija o(s) seguinte(s) erro(s):</b>
+              <ul>
+                <li v-for="(error,index) in errors" :key='index'>{{ error }}</li>
+              </ul>
+          </p>
           <input type="text" placeholder="Nome:" v-model="contatoNome" />
           <input
             type="radio"
