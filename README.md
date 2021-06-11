@@ -1,6 +1,6 @@
 # contatos
 
-Um CRUD para simular uma agenda de contatos usando VUE
+Um CRUD para simular uma agenda de contatos usando VUE e data-mocks
 
 ## Project setup
 
