@@ -58,20 +58,20 @@
                   v-model="contatoSexoChecked"
                 />Mulher<br />
             </div>
-            <div v-else>
+            <div v-if="contatoSexo === 'Feminino' ">
               <input
                   type="radio"
                   @change="onChange($event)"
                   class="inline"
                   value="Masculino"
                   v-model="contatoSexoChecked"
-                  checked
                   />Homem
                 <input
                   type="radio"
                   @change="onChange($event)"
                   value="Feminino"
                   v-model="contatoSexoChecked"
+                  checked
                 />Mulher<br />
             </div>
           <input type="text" class="form__input" placeholder="Email:" v-model="contatoEmail" />
@@ -136,7 +136,7 @@ export default {
       /*
         Apenas é necessário marcar o input radio para passar dessa etapa
       */
-      if(!this. contatoSexoChecked){
+      if(!this.contatoSexoChecked){
         this.errors.push("Insira o sexo")
                 this.requestSent=false;
 
@@ -199,6 +199,7 @@ export default {
       */
       this.errors=[]
       this.isEditing = true;
+      this.contatoSexoChecked= false
       if (!this.contatoNome) {
         this.errors.push("Insira o nome.");
                 this.requestSent=false;
@@ -206,10 +207,9 @@ export default {
       /*
         Apenas é necessário marcar o input radio para passar dessa etapa
       */
-      if(!this. contatoSexoChecked){
+      if(!this.contatoSexo){
         this.errors.push("Insira o sexo")
                 this.requestSent=false;
-
       }
       /*
         Aqui a validação foi dada da seguinte forma, é obrigatório ao menos um caracter antes do "@"
@@ -287,7 +287,6 @@ export default {
       */
     onChange(e) {
       this.contatoSexo = e.target.value;
-      console.log(e.target.checked)
     },
     /*
       Função responsável por remover o contato
