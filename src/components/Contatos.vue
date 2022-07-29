@@ -93,6 +93,7 @@
         <button class="deleteButton" @click="removeContato(index)">Deletar</button>
       </div>
     </div>
+    Made With love by: Matheus
   </div>
 </template>
 
